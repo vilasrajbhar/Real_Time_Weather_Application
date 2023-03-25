@@ -1,0 +1,12 @@
+# folders
+.git
+.gitignore
+.vs
+.vscode
+build
+docker
+node_modules
+# files
+*Dockerfile
+docker-compose*
+**/*.md
