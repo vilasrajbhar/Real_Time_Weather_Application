@@ -3,30 +3,25 @@ FROM node:18.15.0-alpine as dependencies
 
 # Set the working directory
 WORKDIR /usr/local/app
-RUN mkdir Real_Time_Weather_Application
-RUN ls -la
+RUN mkdir weather_forecast
+
 # Add the source code to app
-COPY --chown=node:node . /usr/local/app/Real_Time_Weather_Application/
+COPY --chown=node:node . /usr/local/app/weather_forecast/
 
 #Clearing Cache 
-WORKDIR /usr/local/app/Real_Time_Weather_Application
+WORKDIR /usr/local/app/weather_forecast
+RUN rm -rf package-lock.json Dockerfile .gitignore dockerignore README.md .git
 RUN ls -la
-RUN npm cache clean --force
-RUN npm install
-RUN npm run build
-RUN ls -la
-COPY startup.sh build/
+# npm clear cache and install package
+RUN npm cache clean --force && npm install && npx update-browserslist-db@latest
 
-## Creating new image
-FROM node:18.15.0-alpine
-WORKDIR /usr/local/app/
-COPY --from=dependencies /usr/local/app/Real_Time_Weather_Application/build/ .
-RUN ls -la
-
+# Assign port number
 ENV PORT=8080
 EXPOSE 8080
 
-# check dist SaudiaWebApp
-RUN ls -la /usr/local/app
-RUN ["chmod", "+x", "/usr/local/app/startup.sh"]
-ENTRYPOINT ["sh","/usr/local/app/startup.sh"]
+# check weather_forecast folder
+RUN ls -la /usr/local/app/weather_forecast
+RUN ["chmod", "+x", "/usr/local/app/weather_forecast/startup.sh"]
+
+# execute startup.sh file
+ENTRYPOINT ["sh","/usr/local/app/weather_forecast/startup.sh"]

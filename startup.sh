@@ -1,3 +1,3 @@
 #!/bin/bash
-npm start
-echo "application started..."
+npm run start
+echo "Weather Forecast Application Started :-)"
